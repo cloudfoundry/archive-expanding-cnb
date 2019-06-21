@@ -19,9 +19,23 @@ package main
 import (
 	"fmt"
 	"os"
+	"regexp"
 
+	"github.com/buildpack/libbuildpack/buildplan"
+	"github.com/cloudfoundry/archive-expanding-cnb/expand"
+	"github.com/cloudfoundry/jvm-application-cnb/jvmapplication"
 	"github.com/cloudfoundry/libcfbuildpack/detect"
+	"github.com/cloudfoundry/libcfbuildpack/helper"
 )
+
+var archiveTypes = []*regexp.Regexp{
+	regexp.MustCompile(".*\\.jar$"),
+	regexp.MustCompile(".*\\.war$"),
+	regexp.MustCompile(".*\\.tar$"),
+	regexp.MustCompile(".*\\.tar\\.gz$"),
+	regexp.MustCompile(".*\\.tgz$"),
+	regexp.MustCompile(".*\\.zip$"),
+}
 
 func main() {
 	detect, err := detect.DefaultDetect()
@@ -39,5 +53,28 @@ func main() {
 }
 
 func d(detect detect.Detect) (int, error) {
-	return detect.Fail(), nil
+	var c []string
+
+	for _, r := range archiveTypes {
+		if f, err := helper.FindFiles(detect.Application.Root, r); err != nil {
+			return -1, err
+		} else {
+			c = append(c, f...)
+		}
+	}
+
+	if len(c) != 1 {
+		return detect.Fail(), nil
+	}
+
+	bp := detect.BuildPlan[expand.Dependency]
+	if bp.Metadata == nil {
+		bp.Metadata = make(buildplan.Metadata)
+	}
+	bp.Metadata[expand.Archive] = c[0]
+
+	return detect.Pass(buildplan.BuildPlan{
+		expand.Dependency:         bp,
+		jvmapplication.Dependency: detect.BuildPlan[jvmapplication.Dependency],
+	})
 }

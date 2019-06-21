@@ -17,9 +17,13 @@
 package main
 
 import (
+	"path/filepath"
 	"testing"
 
+	"github.com/buildpack/libbuildpack/buildplan"
 	"github.com/buildpack/libbuildpack/detect"
+	"github.com/cloudfoundry/archive-expanding-cnb/expand"
+	"github.com/cloudfoundry/jvm-application-cnb/jvmapplication"
 	"github.com/cloudfoundry/libcfbuildpack/test"
 	. "github.com/onsi/gomega"
 	"github.com/sclevine/spec"
@@ -37,8 +41,99 @@ func TestDetect(t *testing.T) {
 			f = test.NewDetectFactory(t)
 		})
 
-		it("always fails", func() {
+		it("fails with no archive", func() {
 			g.Expect(d(f.Detect)).To(Equal(detect.FailStatusCode))
+		})
+
+		it("fails with more than one archive", func() {
+			test.TouchFile(t, f.Detect.Application.Root, "test-1.jar")
+			test.TouchFile(t, f.Detect.Application.Root, "test-2.jar")
+
+			g.Expect(d(f.Detect)).To(Equal(detect.FailStatusCode))
+		})
+
+		it("passes with .jar", func() {
+			test.TouchFile(t, f.Detect.Application.Root, "test.jar")
+
+			g.Expect(d(f.Detect)).To(Equal(detect.PassStatusCode))
+			g.Expect(f.Output).To(Equal(buildplan.BuildPlan{
+				expand.Dependency: buildplan.Dependency{
+					Metadata: buildplan.Metadata{
+						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.jar"),
+					},
+				},
+				jvmapplication.Dependency: buildplan.Dependency{},
+			}))
+		})
+
+		it("passes with .war", func() {
+			test.TouchFile(t, f.Detect.Application.Root, "test.war")
+
+			g.Expect(d(f.Detect)).To(Equal(detect.PassStatusCode))
+			g.Expect(f.Output).To(Equal(buildplan.BuildPlan{
+				expand.Dependency: buildplan.Dependency{
+					Metadata: buildplan.Metadata{
+						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.war"),
+					},
+				},
+				jvmapplication.Dependency: buildplan.Dependency{},
+			}))
+		})
+
+		it("passes with .tar", func() {
+			test.TouchFile(t, f.Detect.Application.Root, "test.tar")
+
+			g.Expect(d(f.Detect)).To(Equal(detect.PassStatusCode))
+			g.Expect(f.Output).To(Equal(buildplan.BuildPlan{
+				expand.Dependency: buildplan.Dependency{
+					Metadata: buildplan.Metadata{
+						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tar"),
+					},
+				},
+				jvmapplication.Dependency: buildplan.Dependency{},
+			}))
+		})
+
+		it("passes with .tar.gz", func() {
+			test.TouchFile(t, f.Detect.Application.Root, "test.tar.gz")
+
+			g.Expect(d(f.Detect)).To(Equal(detect.PassStatusCode))
+			g.Expect(f.Output).To(Equal(buildplan.BuildPlan{
+				expand.Dependency: buildplan.Dependency{
+					Metadata: buildplan.Metadata{
+						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tar.gz"),
+					},
+				},
+				jvmapplication.Dependency: buildplan.Dependency{},
+			}))
+		})
+
+		it("passes with .tgz", func() {
+			test.TouchFile(t, f.Detect.Application.Root, "test.tgz")
+
+			g.Expect(d(f.Detect)).To(Equal(detect.PassStatusCode))
+			g.Expect(f.Output).To(Equal(buildplan.BuildPlan{
+				expand.Dependency: buildplan.Dependency{
+					Metadata: buildplan.Metadata{
+						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tgz"),
+					},
+				},
+				jvmapplication.Dependency: buildplan.Dependency{},
+			}))
+		})
+
+		it("passes with .zip", func() {
+			test.TouchFile(t, f.Detect.Application.Root, "test.zip")
+
+			g.Expect(d(f.Detect)).To(Equal(detect.PassStatusCode))
+			g.Expect(f.Output).To(Equal(buildplan.BuildPlan{
+				expand.Dependency: buildplan.Dependency{
+					Metadata: buildplan.Metadata{
+						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.zip"),
+					},
+				},
+				jvmapplication.Dependency: buildplan.Dependency{},
+			}))
 		})
 	}, spec.Report(report.Terminal{}))
 }
