@@ -29,15 +29,6 @@ import (
 	"github.com/cloudfoundry/libcfbuildpack/detect"
 )
 
-var archiveTypes = []*regexp.Regexp{
-	regexp.MustCompile(".*\\.jar$"),
-	regexp.MustCompile(".*\\.war$"),
-	regexp.MustCompile(".*\\.tar$"),
-	regexp.MustCompile(".*\\.tar\\.gz$"),
-	regexp.MustCompile(".*\\.tgz$"),
-	regexp.MustCompile(".*\\.zip$"),
-}
-
 func main() {
 	detect, err := detect.DefaultDetect()
 	if err != nil {
@@ -61,11 +52,9 @@ func d(detect detect.Detect) (int, error) {
 		return -1, err
 	}
 
-	for _, r := range archiveTypes {
-		for _, f := range files {
-			if r.MatchString(f.Name()) {
-				c = append(c, filepath.Join(detect.Application.Root, f.Name()))
-			}
+	for _, f := range files {
+		if regexp.MustCompile(".*\\.(jar|war|tar|tar\\.gz|tgz|zip)$").MatchString(f.Name()) {
+			c = append(c, filepath.Join(detect.Application.Root, f.Name()))
 		}
 	}
 
