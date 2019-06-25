@@ -18,14 +18,15 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
+	"path/filepath"
 	"regexp"
 
 	"github.com/buildpack/libbuildpack/buildplan"
 	"github.com/cloudfoundry/archive-expanding-cnb/expand"
 	"github.com/cloudfoundry/jvm-application-cnb/jvmapplication"
 	"github.com/cloudfoundry/libcfbuildpack/detect"
-	"github.com/cloudfoundry/libcfbuildpack/helper"
 )
 
 var archiveTypes = []*regexp.Regexp{
@@ -55,15 +56,20 @@ func main() {
 func d(detect detect.Detect) (int, error) {
 	var c []string
 
+	files, err := ioutil.ReadDir(detect.Application.Root)
+	if err != nil {
+		return -1, err
+	}
+
 	for _, r := range archiveTypes {
-		if f, err := helper.FindFiles(detect.Application.Root, r); err != nil {
-			return -1, err
-		} else {
-			c = append(c, f...)
+		for _, f := range files {
+			if r.MatchString(f.Name()) {
+				c = append(c, filepath.Join(detect.Application.Root, f.Name()))
+			}
 		}
 	}
 
-	if len(c) != 1 {
+	if c == nil || len(c) != 1 {
 		return detect.Fail(), nil
 	}
 

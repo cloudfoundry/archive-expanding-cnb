@@ -52,6 +52,12 @@ func TestDetect(t *testing.T) {
 			g.Expect(d(f.Detect)).To(Equal(detect.FailStatusCode))
 		})
 
+		it("fails with non-root archive", func() {
+			test.TouchFile(t, f.Detect.Application.Root, "sub-directory", "test-1.jar")
+
+			g.Expect(d(f.Detect)).To(Equal(detect.FailStatusCode))
+		})
+
 		it("passes with .jar", func() {
 			test.TouchFile(t, f.Detect.Application.Root, "test.jar")
 
