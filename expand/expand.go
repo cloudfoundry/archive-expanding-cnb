@@ -44,7 +44,7 @@ type Expand struct {
 
 // Contribute makes the contribution to the application.
 func (e Expand) Contribute() error {
-	e.logger.SubsequentLine("Expanding %s to %s", e.archive, e.application.Root)
+	e.logger.Body("Expanding %s to %s", e.archive, e.application.Root)
 
 	switch {
 	case strings.HasSuffix(e.archive, ".jar"),
@@ -67,7 +67,7 @@ func (e Expand) Contribute() error {
 		}
 	}
 
-	e.logger.SubsequentLine("Removing %s", e.archive)
+	e.logger.Body("Removing  %s", e.archive)
 	return os.Remove(e.archive)
 }
 
