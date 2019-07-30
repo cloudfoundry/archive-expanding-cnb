@@ -23,14 +23,14 @@ import (
 	"github.com/buildpack/libbuildpack/buildplan"
 	"github.com/cloudfoundry/archive-expanding-cnb/expand"
 	"github.com/cloudfoundry/libcfbuildpack/test"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/gomega"
 	"github.com/sclevine/spec"
 )
 
 func TestExpand(t *testing.T) {
 	spec.Run(t, "Expand", func(t *testing.T, _ spec.G, it spec.S) {
 
-		g := NewGomegaWithT(t)
+		g := gomega.NewWithT(t)
 
 		var f *test.BuildFactory
 
@@ -46,14 +46,14 @@ func TestExpand(t *testing.T) {
 			})
 
 			_, ok, err := expand.NewExpand(f.Build)
-			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(ok).To(BeTrue())
+			g.Expect(err).NotTo(gomega.HaveOccurred())
+			g.Expect(ok).To(gomega.BeTrue())
 		})
 
 		it("returns false if build plan does not exist", func() {
 			_, ok, err := expand.NewExpand(f.Build)
-			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(ok).To(BeFalse())
+			g.Expect(err).NotTo(gomega.HaveOccurred())
+			g.Expect(ok).To(gomega.BeFalse())
 		})
 
 		it("expands .jar", func() {
@@ -66,13 +66,13 @@ func TestExpand(t *testing.T) {
 			})
 
 			e, ok, err := expand.NewExpand(f.Build)
-			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(ok).To(BeTrue())
+			g.Expect(err).NotTo(gomega.HaveOccurred())
+			g.Expect(ok).To(gomega.BeTrue())
 
-			g.Expect(e.Contribute()).To(Succeed())
+			g.Expect(e.Contribute()).To(gomega.Succeed())
 
-			g.Expect(filepath.Join(f.Build.Application.Root, "fixture-marker")).To(BeAnExistingFile())
-			g.Expect(a).NotTo(BeAnExistingFile())
+			g.Expect(filepath.Join(f.Build.Application.Root, "fixture-marker")).To(gomega.BeAnExistingFile())
+			g.Expect(a).NotTo(gomega.BeAnExistingFile())
 		})
 
 		it("expands .war", func() {
@@ -85,13 +85,13 @@ func TestExpand(t *testing.T) {
 			})
 
 			e, ok, err := expand.NewExpand(f.Build)
-			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(ok).To(BeTrue())
+			g.Expect(err).NotTo(gomega.HaveOccurred())
+			g.Expect(ok).To(gomega.BeTrue())
 
-			g.Expect(e.Contribute()).To(Succeed())
+			g.Expect(e.Contribute()).To(gomega.Succeed())
 
-			g.Expect(filepath.Join(f.Build.Application.Root, "fixture-marker")).To(BeAnExistingFile())
-			g.Expect(a).NotTo(BeAnExistingFile())
+			g.Expect(filepath.Join(f.Build.Application.Root, "fixture-marker")).To(gomega.BeAnExistingFile())
+			g.Expect(a).NotTo(gomega.BeAnExistingFile())
 		})
 
 		it("expands .tar", func() {
@@ -104,13 +104,13 @@ func TestExpand(t *testing.T) {
 			})
 
 			e, ok, err := expand.NewExpand(f.Build)
-			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(ok).To(BeTrue())
+			g.Expect(err).NotTo(gomega.HaveOccurred())
+			g.Expect(ok).To(gomega.BeTrue())
 
-			g.Expect(e.Contribute()).To(Succeed())
+			g.Expect(e.Contribute()).To(gomega.Succeed())
 
-			g.Expect(filepath.Join(f.Build.Application.Root, "fixture-marker")).To(BeAnExistingFile())
-			g.Expect(a).NotTo(BeAnExistingFile())
+			g.Expect(filepath.Join(f.Build.Application.Root, "fixture-marker")).To(gomega.BeAnExistingFile())
+			g.Expect(a).NotTo(gomega.BeAnExistingFile())
 		})
 
 		it("expands .tar.gz", func() {
@@ -123,13 +123,13 @@ func TestExpand(t *testing.T) {
 			})
 
 			e, ok, err := expand.NewExpand(f.Build)
-			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(ok).To(BeTrue())
+			g.Expect(err).NotTo(gomega.HaveOccurred())
+			g.Expect(ok).To(gomega.BeTrue())
 
-			g.Expect(e.Contribute()).To(Succeed())
+			g.Expect(e.Contribute()).To(gomega.Succeed())
 
-			g.Expect(filepath.Join(f.Build.Application.Root, "fixture-marker")).To(BeAnExistingFile())
-			g.Expect(a).NotTo(BeAnExistingFile())
+			g.Expect(filepath.Join(f.Build.Application.Root, "fixture-marker")).To(gomega.BeAnExistingFile())
+			g.Expect(a).NotTo(gomega.BeAnExistingFile())
 		})
 
 		it("expands .tgz", func() {
@@ -142,13 +142,13 @@ func TestExpand(t *testing.T) {
 			})
 
 			e, ok, err := expand.NewExpand(f.Build)
-			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(ok).To(BeTrue())
+			g.Expect(err).NotTo(gomega.HaveOccurred())
+			g.Expect(ok).To(gomega.BeTrue())
 
-			g.Expect(e.Contribute()).To(Succeed())
+			g.Expect(e.Contribute()).To(gomega.Succeed())
 
-			g.Expect(filepath.Join(f.Build.Application.Root, "fixture-marker")).To(BeAnExistingFile())
-			g.Expect(a).NotTo(BeAnExistingFile())
+			g.Expect(filepath.Join(f.Build.Application.Root, "fixture-marker")).To(gomega.BeAnExistingFile())
+			g.Expect(a).NotTo(gomega.BeAnExistingFile())
 		})
 
 		it("expands .zip", func() {
@@ -161,13 +161,13 @@ func TestExpand(t *testing.T) {
 			})
 
 			e, ok, err := expand.NewExpand(f.Build)
-			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(ok).To(BeTrue())
+			g.Expect(err).NotTo(gomega.HaveOccurred())
+			g.Expect(ok).To(gomega.BeTrue())
 
-			g.Expect(e.Contribute()).To(Succeed())
+			g.Expect(e.Contribute()).To(gomega.Succeed())
 
-			g.Expect(filepath.Join(f.Build.Application.Root, "fixture-marker")).To(BeAnExistingFile())
-			g.Expect(a).NotTo(BeAnExistingFile())
+			g.Expect(filepath.Join(f.Build.Application.Root, "fixture-marker")).To(gomega.BeAnExistingFile())
+			g.Expect(a).NotTo(gomega.BeAnExistingFile())
 		})
 	})
 }

@@ -25,7 +25,7 @@ import (
 	"github.com/cloudfoundry/archive-expanding-cnb/expand"
 	"github.com/cloudfoundry/jvm-application-cnb/jvmapplication"
 	"github.com/cloudfoundry/libcfbuildpack/test"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/gomega"
 	"github.com/sclevine/spec"
 	"github.com/sclevine/spec/report"
 )
@@ -33,7 +33,7 @@ import (
 func TestDetect(t *testing.T) {
 	spec.Run(t, "Detect", func(t *testing.T, _ spec.G, it spec.S) {
 
-		g := NewGomegaWithT(t)
+		g := gomega.NewWithT(t)
 
 		var f *test.DetectFactory
 
@@ -42,27 +42,27 @@ func TestDetect(t *testing.T) {
 		})
 
 		it("fails with no archive", func() {
-			g.Expect(d(f.Detect)).To(Equal(detect.FailStatusCode))
+			g.Expect(d(f.Detect)).To(gomega.Equal(detect.FailStatusCode))
 		})
 
 		it("fails with more than one archive", func() {
 			test.TouchFile(t, f.Detect.Application.Root, "test-1.jar")
 			test.TouchFile(t, f.Detect.Application.Root, "test-2.jar")
 
-			g.Expect(d(f.Detect)).To(Equal(detect.FailStatusCode))
+			g.Expect(d(f.Detect)).To(gomega.Equal(detect.FailStatusCode))
 		})
 
 		it("fails with non-root archive", func() {
 			test.TouchFile(t, f.Detect.Application.Root, "sub-directory", "test-1.jar")
 
-			g.Expect(d(f.Detect)).To(Equal(detect.FailStatusCode))
+			g.Expect(d(f.Detect)).To(gomega.Equal(detect.FailStatusCode))
 		})
 
 		it("passes with .jar", func() {
 			test.TouchFile(t, f.Detect.Application.Root, "test.jar")
 
-			g.Expect(d(f.Detect)).To(Equal(detect.PassStatusCode))
-			g.Expect(f.Output).To(Equal(buildplan.BuildPlan{
+			g.Expect(d(f.Detect)).To(gomega.Equal(detect.PassStatusCode))
+			g.Expect(f.Output).To(gomega.Equal(buildplan.BuildPlan{
 				expand.Dependency: buildplan.Dependency{
 					Metadata: buildplan.Metadata{
 						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.jar"),
@@ -75,8 +75,8 @@ func TestDetect(t *testing.T) {
 		it("passes with .war", func() {
 			test.TouchFile(t, f.Detect.Application.Root, "test.war")
 
-			g.Expect(d(f.Detect)).To(Equal(detect.PassStatusCode))
-			g.Expect(f.Output).To(Equal(buildplan.BuildPlan{
+			g.Expect(d(f.Detect)).To(gomega.Equal(detect.PassStatusCode))
+			g.Expect(f.Output).To(gomega.Equal(buildplan.BuildPlan{
 				expand.Dependency: buildplan.Dependency{
 					Metadata: buildplan.Metadata{
 						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.war"),
@@ -89,8 +89,8 @@ func TestDetect(t *testing.T) {
 		it("passes with .tar", func() {
 			test.TouchFile(t, f.Detect.Application.Root, "test.tar")
 
-			g.Expect(d(f.Detect)).To(Equal(detect.PassStatusCode))
-			g.Expect(f.Output).To(Equal(buildplan.BuildPlan{
+			g.Expect(d(f.Detect)).To(gomega.Equal(detect.PassStatusCode))
+			g.Expect(f.Output).To(gomega.Equal(buildplan.BuildPlan{
 				expand.Dependency: buildplan.Dependency{
 					Metadata: buildplan.Metadata{
 						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tar"),
@@ -103,8 +103,8 @@ func TestDetect(t *testing.T) {
 		it("passes with .tar.gz", func() {
 			test.TouchFile(t, f.Detect.Application.Root, "test.tar.gz")
 
-			g.Expect(d(f.Detect)).To(Equal(detect.PassStatusCode))
-			g.Expect(f.Output).To(Equal(buildplan.BuildPlan{
+			g.Expect(d(f.Detect)).To(gomega.Equal(detect.PassStatusCode))
+			g.Expect(f.Output).To(gomega.Equal(buildplan.BuildPlan{
 				expand.Dependency: buildplan.Dependency{
 					Metadata: buildplan.Metadata{
 						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tar.gz"),
@@ -117,8 +117,8 @@ func TestDetect(t *testing.T) {
 		it("passes with .tgz", func() {
 			test.TouchFile(t, f.Detect.Application.Root, "test.tgz")
 
-			g.Expect(d(f.Detect)).To(Equal(detect.PassStatusCode))
-			g.Expect(f.Output).To(Equal(buildplan.BuildPlan{
+			g.Expect(d(f.Detect)).To(gomega.Equal(detect.PassStatusCode))
+			g.Expect(f.Output).To(gomega.Equal(buildplan.BuildPlan{
 				expand.Dependency: buildplan.Dependency{
 					Metadata: buildplan.Metadata{
 						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tgz"),
@@ -131,8 +131,8 @@ func TestDetect(t *testing.T) {
 		it("passes with .zip", func() {
 			test.TouchFile(t, f.Detect.Application.Root, "test.zip")
 
-			g.Expect(d(f.Detect)).To(Equal(detect.PassStatusCode))
-			g.Expect(f.Output).To(Equal(buildplan.BuildPlan{
+			g.Expect(d(f.Detect)).To(gomega.Equal(detect.PassStatusCode))
+			g.Expect(f.Output).To(gomega.Equal(buildplan.BuildPlan{
 				expand.Dependency: buildplan.Dependency{
 					Metadata: buildplan.Metadata{
 						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.zip"),
