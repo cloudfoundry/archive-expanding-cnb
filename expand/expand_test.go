@@ -25,6 +25,7 @@ import (
 	"github.com/cloudfoundry/libcfbuildpack/test"
 	"github.com/onsi/gomega"
 	"github.com/sclevine/spec"
+	"github.com/sclevine/spec/report"
 )
 
 func TestExpand(t *testing.T) {
@@ -169,5 +170,5 @@ func TestExpand(t *testing.T) {
 			g.Expect(filepath.Join(f.Build.Application.Root, "fixture-marker")).To(gomega.BeAnExistingFile())
 			g.Expect(a).NotTo(gomega.BeAnExistingFile())
 		})
-	})
+	}, spec.Report(report.Terminal{}))
 }
