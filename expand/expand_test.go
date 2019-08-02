@@ -20,8 +20,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/buildpack/libbuildpack/buildplan"
 	"github.com/cloudfoundry/archive-expanding-cnb/expand"
+	"github.com/cloudfoundry/libcfbuildpack/buildpackplan"
 	"github.com/cloudfoundry/libcfbuildpack/test"
 	"github.com/onsi/gomega"
 	"github.com/sclevine/spec"
@@ -40,8 +40,9 @@ func TestExpand(t *testing.T) {
 		})
 
 		it("returns true if build plan does exist", func() {
-			f.AddBuildPlan(expand.Dependency, buildplan.Dependency{
-				Metadata: buildplan.Metadata{
+			f.AddPlan(buildpackplan.Plan{
+				Name: expand.Dependency,
+				Metadata: buildpackplan.Metadata{
 					expand.Archive: "test-archive",
 				},
 			})
@@ -61,10 +62,7 @@ func TestExpand(t *testing.T) {
 			a := filepath.Join(f.Build.Application.Root, "stub-archive.jar")
 
 			test.CopyFile(t, filepath.Join("testdata", "stub-archive.jar"), a)
-
-			f.AddBuildPlan(expand.Dependency, buildplan.Dependency{
-				Metadata: buildplan.Metadata{expand.Archive: a},
-			})
+			f.AddPlan(buildpackplan.Plan{Name: expand.Dependency, Metadata: buildpackplan.Metadata{expand.Archive: a}})
 
 			e, ok, err := expand.NewExpand(f.Build)
 			g.Expect(err).NotTo(gomega.HaveOccurred())
@@ -80,10 +78,7 @@ func TestExpand(t *testing.T) {
 			a := filepath.Join(f.Build.Application.Root, "stub-archive.war")
 
 			test.CopyFile(t, filepath.Join("testdata", "stub-archive.war"), a)
-
-			f.AddBuildPlan(expand.Dependency, buildplan.Dependency{
-				Metadata: buildplan.Metadata{expand.Archive: a},
-			})
+			f.AddPlan(buildpackplan.Plan{Name: expand.Dependency, Metadata: buildpackplan.Metadata{expand.Archive: a}})
 
 			e, ok, err := expand.NewExpand(f.Build)
 			g.Expect(err).NotTo(gomega.HaveOccurred())
@@ -99,10 +94,7 @@ func TestExpand(t *testing.T) {
 			a := filepath.Join(f.Build.Application.Root, "stub-archive.tar")
 
 			test.CopyFile(t, filepath.Join("testdata", "stub-archive.tar"), a)
-
-			f.AddBuildPlan(expand.Dependency, buildplan.Dependency{
-				Metadata: buildplan.Metadata{expand.Archive: a},
-			})
+			f.AddPlan(buildpackplan.Plan{Name: expand.Dependency, Metadata: buildpackplan.Metadata{expand.Archive: a}})
 
 			e, ok, err := expand.NewExpand(f.Build)
 			g.Expect(err).NotTo(gomega.HaveOccurred())
@@ -118,10 +110,7 @@ func TestExpand(t *testing.T) {
 			a := filepath.Join(f.Build.Application.Root, "stub-archive.tar.gz")
 
 			test.CopyFile(t, filepath.Join("testdata", "stub-archive.tar.gz"), a)
-
-			f.AddBuildPlan(expand.Dependency, buildplan.Dependency{
-				Metadata: buildplan.Metadata{expand.Archive: a},
-			})
+			f.AddPlan(buildpackplan.Plan{Name: expand.Dependency, Metadata: buildpackplan.Metadata{expand.Archive: a}})
 
 			e, ok, err := expand.NewExpand(f.Build)
 			g.Expect(err).NotTo(gomega.HaveOccurred())
@@ -137,10 +126,7 @@ func TestExpand(t *testing.T) {
 			a := filepath.Join(f.Build.Application.Root, "stub-archive.tgz")
 
 			test.CopyFile(t, filepath.Join("testdata", "stub-archive.tgz"), a)
-
-			f.AddBuildPlan(expand.Dependency, buildplan.Dependency{
-				Metadata: buildplan.Metadata{expand.Archive: a},
-			})
+			f.AddPlan(buildpackplan.Plan{Name: expand.Dependency, Metadata: buildpackplan.Metadata{expand.Archive: a}})
 
 			e, ok, err := expand.NewExpand(f.Build)
 			g.Expect(err).NotTo(gomega.HaveOccurred())
@@ -156,10 +142,7 @@ func TestExpand(t *testing.T) {
 			a := filepath.Join(f.Build.Application.Root, "stub-archive.zip")
 
 			test.CopyFile(t, filepath.Join("testdata", "stub-archive.zip"), a)
-
-			f.AddBuildPlan(expand.Dependency, buildplan.Dependency{
-				Metadata: buildplan.Metadata{expand.Archive: a},
-			})
+			f.AddPlan(buildpackplan.Plan{Name: expand.Dependency, Metadata: buildpackplan.Metadata{expand.Archive: a}})
 
 			e, ok, err := expand.NewExpand(f.Build)
 			g.Expect(err).NotTo(gomega.HaveOccurred())

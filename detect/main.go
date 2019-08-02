@@ -62,14 +62,13 @@ func d(detect detect.Detect) (int, error) {
 		return detect.Fail(), nil
 	}
 
-	bp := detect.BuildPlan[expand.Dependency]
-	if bp.Metadata == nil {
-		bp.Metadata = make(buildplan.Metadata)
-	}
-	bp.Metadata[expand.Archive] = c[0]
-
-	return detect.Pass(buildplan.BuildPlan{
-		expand.Dependency:         bp,
-		jvmapplication.Dependency: detect.BuildPlan[jvmapplication.Dependency],
+	return detect.Pass(buildplan.Plan{
+		Provides: []buildplan.Provided{
+			{Name: expand.Dependency},
+			{Name: jvmapplication.Dependency},
+		},
+		Requires: []buildplan.Required{
+			{Name: expand.Dependency, Metadata: buildplan.Metadata{expand.Archive: c[0]}},
+		},
 	})
 }
