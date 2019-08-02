@@ -73,12 +73,14 @@ func (e Expand) Contribute() error {
 
 // NewExpand creates a new Expand instance.
 func NewExpand(build build.Build) (Expand, bool, error) {
-	bp, ok := build.BuildPlan[Dependency]
-	if !ok {
+	p, ok, err := build.Plans.GetShallowMerged(Dependency)
+	if err != nil {
+		return Expand{}, false, err
+	} else if !ok {
 		return Expand{}, false, nil
 	}
 
-	a, ok := bp.Metadata[Archive].(string)
+	a, ok := p.Metadata[Archive].(string)
 	if !ok {
 		return Expand{}, false, fmt.Errorf("unable to determine archive path")
 	}

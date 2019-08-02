@@ -62,13 +62,20 @@ func TestDetect(t *testing.T) {
 			test.TouchFile(t, f.Detect.Application.Root, "test.jar")
 
 			g.Expect(d(f.Detect)).To(gomega.Equal(detect.PassStatusCode))
-			g.Expect(f.Output).To(gomega.Equal(buildplan.BuildPlan{
-				expand.Dependency: buildplan.Dependency{
-					Metadata: buildplan.Metadata{
-						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.jar"),
+			g.Expect(f.Plans).To(gomega.Equal(buildplan.Plans{
+				Plan: buildplan.Plan{
+					Provides: []buildplan.Provided{
+						{Name: expand.Dependency},
+						{Name: jvmapplication.Dependency},
+					},
+					Requires: []buildplan.Required{
+						{
+							Name: expand.Dependency,
+							Metadata: buildplan.Metadata{
+								expand.Archive: filepath.Join(f.Detect.Application.Root, "test.jar")},
+						},
 					},
 				},
-				jvmapplication.Dependency: buildplan.Dependency{},
 			}))
 		})
 
@@ -76,13 +83,20 @@ func TestDetect(t *testing.T) {
 			test.TouchFile(t, f.Detect.Application.Root, "test.war")
 
 			g.Expect(d(f.Detect)).To(gomega.Equal(detect.PassStatusCode))
-			g.Expect(f.Output).To(gomega.Equal(buildplan.BuildPlan{
-				expand.Dependency: buildplan.Dependency{
-					Metadata: buildplan.Metadata{
-						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.war"),
+			g.Expect(f.Plans).To(gomega.Equal(buildplan.Plans{
+				Plan: buildplan.Plan{
+					Provides: []buildplan.Provided{
+						{Name: expand.Dependency},
+						{Name: jvmapplication.Dependency},
+					},
+					Requires: []buildplan.Required{
+						{
+							Name: expand.Dependency,
+							Metadata: buildplan.Metadata{
+								expand.Archive: filepath.Join(f.Detect.Application.Root, "test.war")},
+						},
 					},
 				},
-				jvmapplication.Dependency: buildplan.Dependency{},
 			}))
 		})
 
@@ -90,13 +104,20 @@ func TestDetect(t *testing.T) {
 			test.TouchFile(t, f.Detect.Application.Root, "test.tar")
 
 			g.Expect(d(f.Detect)).To(gomega.Equal(detect.PassStatusCode))
-			g.Expect(f.Output).To(gomega.Equal(buildplan.BuildPlan{
-				expand.Dependency: buildplan.Dependency{
-					Metadata: buildplan.Metadata{
-						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tar"),
+			g.Expect(f.Plans).To(gomega.Equal(buildplan.Plans{
+				Plan: buildplan.Plan{
+					Provides: []buildplan.Provided{
+						{Name: expand.Dependency},
+						{Name: jvmapplication.Dependency},
+					},
+					Requires: []buildplan.Required{
+						{
+							Name: expand.Dependency,
+							Metadata: buildplan.Metadata{
+								expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tar")},
+						},
 					},
 				},
-				jvmapplication.Dependency: buildplan.Dependency{},
 			}))
 		})
 
@@ -104,13 +125,20 @@ func TestDetect(t *testing.T) {
 			test.TouchFile(t, f.Detect.Application.Root, "test.tar.gz")
 
 			g.Expect(d(f.Detect)).To(gomega.Equal(detect.PassStatusCode))
-			g.Expect(f.Output).To(gomega.Equal(buildplan.BuildPlan{
-				expand.Dependency: buildplan.Dependency{
-					Metadata: buildplan.Metadata{
-						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tar.gz"),
+			g.Expect(f.Plans).To(gomega.Equal(buildplan.Plans{
+				Plan: buildplan.Plan{
+					Provides: []buildplan.Provided{
+						{Name: expand.Dependency},
+						{Name: jvmapplication.Dependency},
+					},
+					Requires: []buildplan.Required{
+						{
+							Name: expand.Dependency,
+							Metadata: buildplan.Metadata{
+								expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tar.gz")},
+						},
 					},
 				},
-				jvmapplication.Dependency: buildplan.Dependency{},
 			}))
 		})
 
@@ -118,13 +146,20 @@ func TestDetect(t *testing.T) {
 			test.TouchFile(t, f.Detect.Application.Root, "test.tgz")
 
 			g.Expect(d(f.Detect)).To(gomega.Equal(detect.PassStatusCode))
-			g.Expect(f.Output).To(gomega.Equal(buildplan.BuildPlan{
-				expand.Dependency: buildplan.Dependency{
-					Metadata: buildplan.Metadata{
-						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tgz"),
+			g.Expect(f.Plans).To(gomega.Equal(buildplan.Plans{
+				Plan: buildplan.Plan{
+					Provides: []buildplan.Provided{
+						{Name: expand.Dependency},
+						{Name: jvmapplication.Dependency},
+					},
+					Requires: []buildplan.Required{
+						{
+							Name: expand.Dependency,
+							Metadata: buildplan.Metadata{
+								expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tgz")},
+						},
 					},
 				},
-				jvmapplication.Dependency: buildplan.Dependency{},
 			}))
 		})
 
@@ -132,13 +167,20 @@ func TestDetect(t *testing.T) {
 			test.TouchFile(t, f.Detect.Application.Root, "test.zip")
 
 			g.Expect(d(f.Detect)).To(gomega.Equal(detect.PassStatusCode))
-			g.Expect(f.Output).To(gomega.Equal(buildplan.BuildPlan{
-				expand.Dependency: buildplan.Dependency{
-					Metadata: buildplan.Metadata{
-						expand.Archive: filepath.Join(f.Detect.Application.Root, "test.zip"),
+			g.Expect(f.Plans).To(gomega.Equal(buildplan.Plans{
+				Plan: buildplan.Plan{
+					Provides: []buildplan.Provided{
+						{Name: expand.Dependency},
+						{Name: jvmapplication.Dependency},
+					},
+					Requires: []buildplan.Required{
+						{
+							Name: expand.Dependency,
+							Metadata: buildplan.Metadata{
+								expand.Archive: filepath.Join(f.Detect.Application.Root, "test.zip")},
+						},
 					},
 				},
-				jvmapplication.Dependency: buildplan.Dependency{},
 			}))
 		})
 	}, spec.Report(report.Terminal{}))
