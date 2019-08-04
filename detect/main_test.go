@@ -71,7 +71,7 @@ func TestDetect(t *testing.T) {
 					{
 						Name: expand.Dependency,
 						Metadata: buildplan.Metadata{
-							expand.Archive: filepath.Join(f.Detect.Application.Root, "test.zip")},
+							expand.Archive: filepath.Join(f.Detect.Application.Root, "test.jar")},
 					},
 				},
 			}))
@@ -90,7 +90,7 @@ func TestDetect(t *testing.T) {
 					{
 						Name: expand.Dependency,
 						Metadata: buildplan.Metadata{
-							expand.Archive: filepath.Join(f.Detect.Application.Root, "test.zip")},
+							expand.Archive: filepath.Join(f.Detect.Application.Root, "test.war")},
 					},
 				},
 			}))
@@ -100,18 +100,16 @@ func TestDetect(t *testing.T) {
 			test.TouchFile(t, f.Detect.Application.Root, "test.tar")
 
 			g.Expect(d(f.Detect)).To(gomega.Equal(detect.PassStatusCode))
-			g.Expect(f.Plans).To(gomega.Equal(buildplan.Plans{
-				Plan: buildplan.Plan{
-					Provides: []buildplan.Provided{
-						{Name: expand.Dependency},
-						{Name: jvmapplication.Dependency},
-					},
-					Requires: []buildplan.Required{
-						{
-							Name: expand.Dependency,
-							Metadata: buildplan.Metadata{
-								expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tar")},
-						},
+			g.Expect(f.Plans).To(test.HavePlans(buildplan.Plan{
+				Provides: []buildplan.Provided{
+					{Name: expand.Dependency},
+					{Name: jvmapplication.Dependency},
+				},
+				Requires: []buildplan.Required{
+					{
+						Name: expand.Dependency,
+						Metadata: buildplan.Metadata{
+							expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tar")},
 					},
 				},
 			}))
@@ -130,7 +128,7 @@ func TestDetect(t *testing.T) {
 					{
 						Name: expand.Dependency,
 						Metadata: buildplan.Metadata{
-							expand.Archive: filepath.Join(f.Detect.Application.Root, "test.zip")},
+							expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tar.gz")},
 					},
 				},
 			}))
@@ -149,7 +147,7 @@ func TestDetect(t *testing.T) {
 					{
 						Name: expand.Dependency,
 						Metadata: buildplan.Metadata{
-							expand.Archive: filepath.Join(f.Detect.Application.Root, "test.zip")},
+							expand.Archive: filepath.Join(f.Detect.Application.Root, "test.tgz")},
 					},
 				},
 			}))
